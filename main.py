@@ -2,6 +2,7 @@
 
 import os
 import logging
+import datetime
 from time import sleep
 
 
@@ -27,3 +28,8 @@ else:
 # DEBUG     10
 # NOTSET    0
 logging.basicConfig(filename=log_path, level=logging.DEBUG)
+
+# set formatted time for logging
+day = datetime.datetime.now()
+log_time = day.strftime("%a-%d.%m.%Y-%H:%M:%S")
+logging.info("{0}Set up time".format(log_time))
