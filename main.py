@@ -25,16 +25,16 @@ timer = 120
 #   |-fan speed in %
 #   |    |-max temperature for fan speed in °C
 #   |    |
-lim10 = 30
-lim20 = 40
-lim30 = 50
-lim40 = 60
-lim50 = 65
-lim60 = 70
-lim70 = 73
-lim80 = 76
-lim90 = 80
-lim100 = 90
+lim10 = 30      # in hex: A
+lim20 = 40      # in hex: 14
+lim30 = 50      # in hex: 1E
+lim40 = 60      # in hex: 28
+lim50 = 65      # in hex: 32
+lim60 = 70      # in hex: 3C
+lim70 = 73      # in hex: 46
+lim80 = 76      # in hex: 50
+lim90 = 80      # in hex: 5A
+lim100 = 90     # in hex: 64
 # Example: The CPU temperature is 45°C, so the fan runs at 30% of its maximum speed
 
 # check at boot, if logfile exists. If not, create one
@@ -45,13 +45,14 @@ else:
     print("logfile already exists")
 
 # set up logging mode. Following modes are available:
-# level     numeric value (if needed)
-# CRITICAL  50
-# ERROR     40
-# WARNING   30
-# INFO      20
-# DEBUG     10
-# NOTSET    0
+# level     |   numeric value (if needed)
+# ---------------------------------------
+# CRITICAL  |   50
+# ERROR     |   40
+# WARNING   |   30
+# INFO      |   20
+# DEBUG     |   10
+# NOTSET    |   0
 logging.basicConfig(filename=log_path, level=logging.DEBUG)
 
 # set formatted time for logging
@@ -65,7 +66,7 @@ logging.info("{0}Set up time".format(log_time))
 while True:
     day = datetime.datetime.now()
     log_time = day.strftime("%a-%d.%m.%Y-%H:%M:%S ")
-    cpu = CPUTemperature
+    cpu = CPUTemperature.temperature
     cpu_str = str(cpu)
     logging.info("{0}CPU Temperature: {1}".format(log_time, cpu))
 
