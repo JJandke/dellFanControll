@@ -67,14 +67,77 @@ while True:
     log_time = day.strftime("%a-%d.%m.%Y-%H:%M:%S ")
     cpu = CPUTemperature
     cpu_str = str(cpu)
-    logging.info("{0}CPU Temperature: {1}".format(log_time, cpu_temp))
+    logging.info("{0}CPU Temperature: {1}".format(log_time, cpu))
 
     if cpu.temperature < lim10:
-        logging.info("{0}Cpu Temperature: {1}".format(log_time, cpu_str))
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0xA")
+        logging.info("{0}CPU Temperature: {1}".format(log_time, cpu_str))
         sleep(timer)
 
+    # 20%
     elif lim10 <= cpu.temperature < lim20:
-        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x01 0x00")
-        logging.info("{0}Cpu Temperature: {1}".format(log_time, cpu_str))
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x14")
+        logging.info("{0}CPU Temperature: {1}".format(log_time, cpu_str))
         sleep(timer)
 
+    # 30%
+    elif lim20 <= cpu.temperature < lim30:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x1E")
+        logging.info("{0}CPU Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer)
+
+    # 40%
+    elif lim30 <= cpu.temperature < lim40:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x28")
+        logging.info("{0}CPU Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer)
+
+    # 50%
+    elif lim40 <= cpu.temperature < lim50:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x32")
+        logging.info("{0}CPU Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer)
+
+    # 60%
+    elif lim50 <= cpu.temperature < lim60:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x3C")
+        logging.info("{0}CPU Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer)
+
+    # 70%
+    elif lim60 <= cpu.temperature < lim70:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x46")
+        logging.info("{0}CPU Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer)
+
+    # 80%
+    elif lim70 <= cpu.temperature < lim80:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x50")
+        logging.info("{0}CPU Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer)
+
+    # 90%
+    elif lim80 <= cpu.temperature < lim90:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x5A")
+        logging.warning("{0}CPU Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer)
+
+    # 100%
+    elif lim90 <= cpu.temperature < lim100:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x64")
+        logging.warning("{0}CPU Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer)
+
+    # 100% for twice the time
+    elif cpu.temperature > lim100:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x64")
+        logging.critical("{0}CPU Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer*2)
+
+    # ERROR. Something is broken or I am too stupid to write code
+    else:
+        logging.error("{0}Temperature does not match to any given case.\n{1}CPU Temperature: {2}".format(log_time, log_time, cpu_str))
+        # setting fan speed to 100% just for case
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x02 0xff 0x64")
+        # Waiting the pre-set time anyway (otherwise the logfile will be spammed). Hopefully nothing burns down
+        sleep(timer)
