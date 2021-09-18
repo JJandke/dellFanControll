@@ -35,6 +35,7 @@ lim70 = 73
 lim80 = 76
 lim90 = 80
 lim100 = 90
+# Example: The CPU temperature is 45°C, so the fan runs at 30% of its maximum speed
 
 # check at boot, if logfile exists. If not, create one
 if not os.path.isfile(log_path):
@@ -72,4 +73,8 @@ while True:
         logging.info("{0}Cpu Temperature: {1}".format(log_time, cpu_str))
         sleep(timer)
 
-    elif cpu.temperature
+    elif lim10 <= cpu.temperature < lim20:
+        os.system("ipmitool -I lanplus -H 192.168.188.189 -U FanManagement -P 'keF78488479c%' raw 0x30 0x30 0x01 0x00")
+        logging.info("{0}Cpu Temperature: {1}".format(log_time, cpu_str))
+        sleep(timer)
+
